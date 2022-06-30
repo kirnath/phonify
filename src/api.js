@@ -6,7 +6,7 @@ const router = express.Router();
 const axios = require('axios');
 
 router.get("/res", (req, res) => {
-  if(!req.body.Digits) return res.json({msg: "Digits not found"})
+
   const response = new VoiceResponse();
   response.say('You entered '+req.body.Digits);
   res.type('text/xml');
