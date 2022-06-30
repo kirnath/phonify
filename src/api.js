@@ -19,7 +19,6 @@ router.get('/voice',(req,res) => {
   const gather = response.gather({
       action: '/res',
       method: 'GET',
-      numDigits: 6
   });
   gather.say('Please enter your account number,\nfollowed by the pound sign');
   response.say('We didn\'t receive any input. Goodbye!');
