@@ -14,7 +14,7 @@ router.get("/res", (req, res) => {
 
 });
 
-router.get('/voice',(req,res) => {
+router.get('/voice.xml',(req,res) => {
   const response = new VoiceResponse();
   const gather = response.gather({
       action: '/res',
